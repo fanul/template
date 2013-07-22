@@ -1,0 +1,946 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pos",
+				"position"
+			],
+			[
+				"user",
+				"userpict"
+			],
+			[
+				"upload",
+				"upload_path"
+			],
+			[
+				"con",
+				"config"
+			],
+			[
+				"co",
+				"config"
+			],
+			[
+				"up",
+				"upload_path"
+			],
+			[
+				"th",
+				"this"
+			],
+			[
+				"htmd",
+				"htmlspecialchars_decode"
+			],
+			[
+				"tex",
+				"text"
+			],
+			[
+				"box",
+				"box_old_content"
+			],
+			[
+				"htm",
+				"htmlspecialchars"
+			],
+			[
+				"new",
+				"news_content"
+			],
+			[
+				"sys_",
+				"sys_user_name"
+			],
+			[
+				"o",
+				"output"
+			],
+			[
+				"iss",
+				"isset"
+			],
+			[
+				"box_",
+				"box_news_content"
+			],
+			[
+				"as",
+				"asuransi_identitas"
+			],
+			[
+				"per",
+				"periode_bulan"
+			],
+			[
+				"tem",
+				"tempat_id"
+			],
+			[
+				"te",
+				"tempat_id"
+			],
+			[
+				"temp",
+				"tempat"
+			],
+			[
+				"mysql_fe",
+				"mysql_fetch_row"
+			],
+			[
+				"mysq",
+				"mysql_fetch_assoc"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"strt",
+				"strtolower"
+			],
+			[
+				"tempat",
+				"tempat_id"
+			],
+			[
+				"cost",
+				"cost_center_id"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"pa",
+				"padding-left"
+			],
+			[
+				"to",
+				"totalW"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"scr",
+				"scroll"
+			],
+			[
+				"inl",
+				"inline"
+			],
+			[
+				"in",
+				"inline"
+			],
+			[
+				"blo",
+				"inline-block"
+			],
+			[
+				"pad",
+				"padding-right"
+			],
+			[
+				"em",
+				"emailToSend"
+			],
+			[
+				"sys",
+				"sys_group"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "<div id=\"form_newscontrol\">\n    <form id=\"newscontrol_newscontrol\" class=\"da-form\" action=\"javascript:fnewscontrol_send();\">\n\n        <div class=\"da-form-inline\">\n\n            <input type=\"hidden\" value=\"<?php if (isset($news_id)) echo $news_id; ?>\" name=\"box_news_id\" id=\"box_news_id\">\n\n            <div class=\"da-form-row\">\n                <label>Judul</label>\n                <div class=\"da-form-item\">\n                    <input value=\"<?php\nif (isset($news_title))\n    echo $news_title;\n?>\" type=\"text\" name=\"box_news_title\" id=\"box_news_title\" data-bvalidator=\"required\" > \n                </div>\n            </div>\n\n            <div class=\"da-form-row\">\n                <label>Ditampilkan</label>\n                <div class=\"da-form-item\">\n                    <input value=\"<?php\n                           $checked = \"checked=checked\";\n                           if (!isset($news_is_display)||$news_is_display==0)\n                               $checked = \"\";\n?>\" <?php echo $checked; ?>  type=\"checkbox\" name=\"box_is_display\" id=\"box_is_display\">\n                </div>\n            </div>\n\n            <div class=\"da-form-row\">\n                <label>Periodik</label>\n                <div class=\"da-form-item\">\n                    <input value=\"<?php\n                           $checked = \"checked=checked\";\n                           if (!isset($news_is_periodic)||$news_is_periodic==0)\n                               $checked = \"\";\n?>\" <?php echo $checked; ?> type=\"checkbox\" name=\"box_is_periodic\" id=\"box_is_periodic\" onchange=\"disable_date();\">\n                </div>\n            </div>\n\n            <div class=\"da-form-row\">\n                <label>Tanggal Mulai</label>\n                <div class=\"da-form-item\">\n                    <input value=\"<?php\n                           if (isset($news_start_date))\n                               echo $news_start_date;\n?>\" type=\"text\" name=\"box_news_start_date\" id=\"box_news_start_date\" data-bvalidator=\"cekcombo\" > \n                </div>\n            </div>\n\n            <div class=\"da-form-row\">\n                <label>Tanggal Akhir</label>\n                <div class=\"da-form-item\">\n                    <input value=\"<?php\n                           if (isset($news_end_date))\n                               echo $news_end_date;\n?>\" type=\"text\" name=\"box_news_end_date\" id=\"box_news_end_date\" data-bvalidator=\"cekcombo\" > \n                </div>\n            </div>\n\n            <div class=\"da-form-row\">\n                <label>Publik</label>\n                <div class=\"da-form-item\">\n                    <input value=\"<?php\n                           $checked = \"checked=checked\";\n                           if (!isset($news_is_public)||$news_is_public==0)\n                               $checked = \"\";\n?>\" <?php echo $checked; ?> type=\"checkbox\" name=\"box_is_public\" id=\"box_is_public\">\n                </div>\n            </div>\n\n            <br>\n\n            <div class=\"da-form-row\">\n                <label>Function</label>\n                <div class=\"da-form-item large\">\n                    <span class=\"formNote\">Tekan Dan Tahan [ctrl] untuk memilih lebih dari 1</span>\n                    <select data-placeholder=\"Your Favorite Football Team\" class=\"chzn-select\" multiple=\"\" tabindex=\"-1\" style=\"max-width: 350px\">\n                        <option value=\"\"></option>\n                        <optgroup label=\"NFC EAST\">\n                            <option>Dallas Cowboys</option>\n                            <option>New York Giants</option>\n                            <option>Philadelphia Eagles</option>\n                            <option>Washington Redskins</option>\n                        </optgroup>\n                        <optgroup label=\"NFC NORTH\">\n                            <option>Chicago Bears</option>\n                            <option>Detroit Lions</option>\n                            <option>Green Bay Packers</option>\n                            <option>Minnesota Vikings</option>\n                        </optgroup>\n                    </select>\n                </div>\n            </div>\n\n            <div class=\"da-form-row\">\n                <label>Berita</label>\n                <div class=\"da-form-item large\">\n                    <textarea name=\"box_news_content\" id=\"box_news_content\"><?php if(isset($news_content)) echo $news_content;?></textarea>\n                    <!-- <textarea id=\"box_old_content\" style=\"display: none\"></textarea> -->\n                </div>\n            </div>\n\n            <div class=\"da-button-row\">\n                <input type=\"submit\" name=\"submit\" class=\"hasDatepicker da-button blue\" id=\"submit\" name=\"submit\" value=\"<?php echo $tombol; ?>\"></td>\n            </div>\n\n        </div>\n\n    </form>\n\n    <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\n        <div class=\"ui-dialog-buttonset\">\n            <button type=\"button\" class=\"ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only\" role=\"button\" aria-disabled=\"false\">\n                <span class=\"ui-button-text\">Submit</span>\n            </button>\n        </div>\n    </div>\n    <script type=\"text/javascript\" >\n\n        $(window).resize(function() {\n            $('#form_newscontrol').dialog(\"option\", \"position\", ['center', 'center']);\n        });\n        \n        $(document).ready(function () {\n            \n            //var editor = new elRTE(document.getElementById('da-ex-wysiwyg'), opts);\n\n            $('.chzn-select').chosen();\n\n            $('.chzn-choices input').autocomplete({\n             source: function( request, response ) {\n              $.ajax({\n                  url: \"/change/name/autocomplete/\"+request.term+\"/\",\n                  dataType: \"json\",\n                  success: function( data ) {\n                   response( $.map( data, function( item ) {\n                    $('ul.chzn-results').append('<li class=\"active-result\">' + item.name + '</li>');\n\n                }\n            });\n                   \n\n            $('#form_newscontrol').dialog({\n                close: function(event, ui) {$(this).remove()},\n                draggable: false,\n                show: 'fade',\n                hide: 'fade',\n                title: '<?php echo $title; ?>',\n                resizable: false,\n                position: [250,'center'],\n                width: 'auto',\n                open: function (event, ui) {\n                    $('#form_newscontrol').css('overflow', 'hidden');\n\n                    tinyMCE.init({\n                        mode : \"textareas\",\n                        plugins: [\n                        \"advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker\",\n                        \"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking\",\n                        \"save table contextmenu directionality emoticons template paste textcolor jbimages\"\n                        ],\n                        style_formats: [\n                        {title: 'Bold text', inline: 'b'},\n                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},\n                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},\n                        {title: 'Example 1', inline: 'span', classes: 'example1'},\n                        {title: 'Example 2', inline: 'span', classes: 'example2'},\n                        {title: 'Table styles'},\n                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}\n                        ],\n                        relative_urls : true,\n                           toolbar: \"insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages\"\n                });\n\n                     //tinyMCE.get('box_news_content').focus(); \n                     //tinyMCE.activeEditor.setContent($(\"#box_old_content\").text());\n\n                    disable_date();\n\n                },\n                modal: true\n            });\n            \n            //bvalidator\n            $('#newscontrol_newscontrol').bValidator();\n            \n            //ini bugnya entah kenapa harus dikasi hasDatepicker di class div.nya\n            $('#box_news_start_date').datetimepicker({yearRange: \"+30\",changeMonth: true,changeYear: true,dateFormat: \"dd-mm-yy\", timeFormat: 'hh:mm:ss' <?php if (isset($news_start_date)) { ?> , currentText: \"<?php echo $news_start_date; ?>\" <?php } ?>});\n            $('#box_news_end_date').datetimepicker({yearRange: \"+30\",changeMonth: true,changeYear: true,dateFormat: \"dd-mm-yy\", timeFormat: 'hh:mm:ss' <?php if (isset($news_end_date)) { ?> , currentText: \"<?php echo $news_end_date; ?>\" <?php } ?>});\n            \n        });\n    \n        \n        function fnewscontrol_send(){\n            \n            str = $(\"#newscontrol_newscontrol\").serialize();\n            nocache = Math.random();\n            var dataString = str+'&nocache='+nocache;\n            $.ajax({\n                type: 'POST',\n                url: '<?php echo $send_url; ?>',\n                data: dataString,\n                cache: false,\n                success: function(html){\n                    if (html == 'ok'){\n                        hideLoading();\n                        $('#form_newscontrol').dialog('close');\n                        showSukses('Proses berhasil');\n                        $(\"#tabel-newscontrol\").flexReload();\n                    }else{\n                        showError('Proses gagal');\n                    }\n                },\n                error:function(xhr,ajaxOptions,thrownError){\n                    hideLoading();\n                    ajaxError(xhr,ajaxOptions,thrownError);\n                }\n            })\n        }\n\n        function disable_date()\n        {\n            var is_checked = $('#box_is_periodic').attr('checked')?true:false;\n            \n            if(!is_checked)\n            {\n                $('#box_news_start_date').attr('disabled', 'disabled');\n                $('#box_news_end_date').attr('disabled', 'disabled');\n                \n            }\n            else\n            {\n                $('#box_news_start_date').removeAttr('disabled');\n                $('#box_news_end_date').removeAttr('disabled');\n                \n            }\n        }\n\n        function cekcombo()\n        {\n            if(!$('#box_is_periodic').checked())\n                return true;\n            else\n                return false;\n        }\n\n    </script>\n</div>",
+			"file": "application/modules/news/views/form_news2.php",
+			"file_size": 10239,
+			"file_write_time": 130189522286946085,
+			"settings":
+			{
+				"buffer_size": 10503,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 148,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/Default.sublime-theme",
+			"settings":
+			{
+				"buffer_size": 25259,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"brack",
+				"Preferences: Browse Packages"
+			],
+			[
+				"pacage",
+				"Package Control: Install Package"
+			],
+			[
+				"menu",
+				"View: Toggle Menu"
+			],
+			[
+				"men",
+				"View: Toggle Menu"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"paclage",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"packag",
+				"Package Control: List Packages"
+			],
+			[
+				"packge",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 464.0
+	},
+	"console":
+	{
+		"height": 146.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/XAMPP/htdocs/web/temp/application/controllers/uploader.php",
+		"/C/XAMPP/htdocs/web/temp/application/modules/public/controllers/pict.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/dialog-v4.htm",
+		"/C/XAMPP/htdocs/web/temp/application/config/uploader_settings.php",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/Default.sublime-theme",
+		"/C/XAMPP/htdocs/web/temp/application/modules/admin/views/form_group.php",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.331/config.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/editor_plugin_src.js",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/editor_plugin.js",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/plugin.js",
+		"/C/XAMPP/htdocs/web/temp/application/config/config.php",
+		"/C/XAMPP/htdocs/web/temp/application/helpers/jbimages_helper.php",
+		"/C/XAMPP/htdocs/web/temp/application/views/blank.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/js/dialog-v4.js",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/js/dialog.js",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/plugin.min.js",
+		"/C/XAMPP/htdocs/web/temp/application/views/ajax_upload_result.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/dialog.htm",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/ci/index.php",
+		"/C/XAMPP/htdocs/web/temp/application/modules/news/controllers/news.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/is_allowed.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/ci/application/config/uploader_settings.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/dialog-v4.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/dialog.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/config.php",
+		"/C/XAMPP/htdocs/web/temp/application/language/english/jbstrings_lang.php",
+		"/C/XAMPP/htdocs/web/temp/application/config/user_agents.php",
+		"/C/XAMPP/htdocs/web/temp/application/config/hooks.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/readme",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/plugins/jbimages/ci/application/helpers/jbimages_helper.php",
+		"/C/XAMPP/htdocs/web/temp/application/views/error_page.php",
+		"/C/XAMPP/htdocs/web/temp/application/modules/public/controllers/uploader.php",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/CSSTidy/CSSTidy.sublime-settings",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/HtmlTidy/HtmlTidy.sublime-settings",
+		"/C/XAMPP/htdocs/web/temp/system/core/Input.php",
+		"/C/XAMPP/htdocs/web/temp/plugins/tinymce4/tinymce.min.js",
+		"/C/XAMPP/htdocs/web/temp/application/modules/dashboard/views/dashboard.php",
+		"/C/XAMPP/htdocs/web/temp/application/core/MY_Input.php",
+		"/C/XAMPP/htdocs/web/temp/application/core/MY_Loader.php",
+		"/C/XAMPP/htdocs/web/temp/thechosen.css",
+		"/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/PHP.sublime-settings",
+		"/D/My Document/lamaran/Djarum/Reason To WOrk.txt",
+		"/G/Crack/deviance.nfo",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_user.sql",
+		"/H/World Of Backup/DROPBOX/titipan/ninis/download.txt",
+		"/D/My Download/madusari_v6.sql",
+		"/C/XAMPP/htdocs/web/madusarimas/sql_script/v_gaji_main.sql",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_agenda.sql",
+		"/D/My Master/Utility/Camtasia_Studio_6_-_By_RenataMarques_www.theevolution.org/Serial.txt",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_employee.sql",
+		"/C/XAMPP/htdocs/web/tes/template.sql",
+		"/H/World Of Backup/warnet/Senior Skip Day ( 2008 )/1.srt",
+		"/C/XAMPP/htdocs/web/madusarimas/application/modules/main/views/template/kiri.php",
+		"/D/My Download/madusari_v5.sql",
+		"/D/My Download/madusari_v6 (1).sql",
+		"/D/My Download/madusari_v4.sql",
+		"/D/My Document/download_manga",
+		"/C/XAMPP/htdocs/web/tes/aero.php",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.770/Petunjuk.txt",
+		"/C/XAMPP/htdocs/web/tes/craz.php",
+		"/G/GTA San Andreas Add On/Grand Theft Auto - San Andreas v1.0 [ALL] Crash Fix Patch/Crack/hoodlum.nfo",
+		"/G/_PETUNJUK_INSTALASI.txt",
+		"/D/My Game/sanandreas/GTA San Andreas/gta_sa.reg",
+		"/C/XAMPP/htdocs/web/tes/upload.php",
+		"/D/My Document/download_series.txt",
+		"/C/XAMPP/htdocs/web/koper/system/application/config/config.php",
+		"/C/XAMPP/htdocs/web/koper/system/application/config/database.php",
+		"/D/My Document/lamaran/ptpn/regis",
+		"/D/My Document/download_series",
+		"/D/My Document/lamaran/BRI/no.peserta.txt",
+		"/H/World Of Backup/DROPBOX/kampus/lomba/inaicta/exodia(1).sql",
+		"/C/XAMPP/htdocs/web/koper/system/application/views/cart-info.php",
+		"/H/World Of Backup/DROPBOX/kampus/semester 7/soset/orasi.txt",
+		"/C/XAMPP/htdocs/web/madusarimas/sql_script/v_interview_main.sql",
+		"/C/XAMPP/htdocs/web/madusarimas/sql_script/v_warning.sql",
+		"/C/XAMPP/htdocs/web/madusarimas/sql_script/v_surat_main.sql",
+		"/H/World Of Software/WEB World/3party/Highcharts-3.0.1/exporting-server/php/php-batik/index.php",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.011/NfcUtil.java",
+		"/C/XAMPP/htdocs/web/madusarimas/sql_script/v_list_valid_cost_center.sql",
+		"/G/GTA San Andreas Add On/Grand Theft Auto - San Andreas v1.0 [ALL] Crash Fix Patch/Pacth/inspire.nfo",
+		"/D/My Game/theme/crack/mcz-hospnocd.nfo",
+		"/D/My Game/theme/crack/r1-hospnocd.nfo",
+		"/F/#MySDC/G000482/CARA INSTALL.txt",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.763/Petunjuk.txt",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.405/Cara Main.txt",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.396/Petunjuk.txt",
+		"/C/XAMPP/htdocs/web/tes/ws_pariwisata.sql",
+		"/C/XAMPP/htdocs/web/madusarimas/_master/madusarimas/madusari.sql",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.954/elfinder.min.css",
+		"/H/World Of Game/sims/CD KEY.txt",
+		"/F/การเข้า/downloadan/yg g bisan di donlod.txt",
+		"/C/XAMPP/htdocs/web/madusarimas/sql_script/query_laporan_posisi_karyawan.sql",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.867/How To.txt",
+		"/C/XAMPP/htdocs/web/temp/plugins/elfinder/css/elfinder.css",
+		"/C/XAMPP/htdocs/web/temp/css/elfinder/elfinder.min.css",
+		"/C/XAMPP/htdocs/web/temp/css/elfinder/elfinder.min.ori.css",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIb0.371/welcome_message.php",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIb0.226/welcome_message.php",
+		"/D/My Document/lamaran/pjbservice/syarat.txt",
+		"/H/World Of Software/WEB World/template/web/dashboard/DANDELION FULL/dan_ad_2/HTML/plugins/elfinder/js/elfinder.full.js",
+		"/H/World Of Software/WEB World/template/web/dashboard/DANDELION FULL/dan_ad_2/HTML/plugins/elfinder/connectors/php/connector.php",
+		"/H/World Of Software/WEB World/template/web/dashboard/DANDELION FULL/dan_ad_2/HTML/js/demo/demo.ui.js",
+		"/H/World Of Software/WEB World/template/web/dashboard/DANDELION FULL/dan_ad_2/HTML/js/demo/demo.tables.js",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.994/Tutorial Install.txt",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_family.sql",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_track_record.sql",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_karyawan.sql",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_acl.sql",
+		"/C/XAMPP/htdocs/web/temp/sql/view/v_log.sql",
+		"/D/My Download/sys_notif.sql",
+		"/D/My Download/sys_acl.sql",
+		"/D/My Download/sys_page.sql",
+		"/D/My Download/sys_user.sql",
+		"/D/My Download/sys_group.sql",
+		"/D/My Download/Black & White/README.TXT",
+		"/E/_PETUNJUK_INSTALASI.txt",
+		"/G/crack/jeffvv41.txt",
+		"/D/My Game/from dust/skidrow.nfo",
+		"/G/CRACK/skidrow.nfo",
+		"//10.151.63.3/data/_Movies/SZ/LIST szasa.txt",
+		"/G/Crack Server emulator/PENTING_BACA_DULU.txt",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.482/version.txt",
+		"/C/Users/Fanul/AppData/Local/Temp/Rar$DIa0.714/readme.txt",
+		"/D/My Download/Black & White/IMPORTANT FILE {must read}.txt"
+	],
+	"find":
+	{
+		"height": 52.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"img_path",
+			"valid",
+			"indent",
+			"&gt",
+			"ctrl+shift+r",
+			"input",
+			"tinymce",
+			"INSERT INTO `kontrak`",
+			"INSERT INTO `penawaran`",
+			"kontrak",
+			"ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER ",
+			"upload",
+			"ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER ",
+			"-cwd",
+			"font-size",
+			"size",
+			"sys_profile",
+			" ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER",
+			"meidum",
+			"OLD",
+			"width",
+			"hidden",
+			"hmg_motioncontainer_a",
+			"content",
+			"#main",
+			"#content",
+			"site-content",
+			"content",
+			"overflow-x",
+			"image_list_wrapper",
+			"wrapper_class",
+			"width",
+			"totalw",
+			"width",
+			"content",
+			"content-area",
+			"template",
+			"page",
+			"display",
+			"entry",
+			"overflow",
+			"entry",
+			"displa",
+			"display",
+			"inline",
+			"display",
+			"entry-content",
+			"overflow",
+			"page",
+			"overflow",
+			"content",
+			"comment",
+			"form",
+			"comment",
+			"you",
+			"border-bottom",
+			"site-content",
+			"content",
+			"second",
+			"hr",
+			"hfeed",
+			"google",
+			"\\t",
+			"grid_2",
+			"search",
+			"addform",
+			"addformdata",
+			"nform",
+			"searchstr_validator_operator",
+			"$searchstr_validator_operator",
+			"$colmodel",
+			"options",
+			"$options",
+			"options",
+			"row",
+			"next",
+			"fafafa",
+			"hover",
+			"ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER ",
+			"ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER",
+			"../flexigrid/images/",
+			"this",
+			"../images",
+			"CI_",
+			"NameValuePair",
+			"tes",
+			"executer",
+			"paid",
+			"v_kontrak_all"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			">",
+			"",
+			"hr_employee",
+			"",
+			"../images/flexigrid/",
+			"../flexigrid/",
+			"../flexigrid/images",
+			"MX_"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "application/modules/news/views/form_news2.php",
+					"settings":
+					{
+						"buffer_size": 10503,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5130,
+								5130
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1979.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+					"settings":
+					{
+						"buffer_size": 148,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/AAAPackageDev/Support/Sublime Settings.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/Fanul/AppData/Roaming/Sublime Text 2/Packages/User/Default.sublime-theme",
+					"settings":
+					{
+						"buffer_size": 25259,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								882,
+								882
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 216.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 225.0,
+	"status_bar_visible": true
+}

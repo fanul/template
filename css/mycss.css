@@ -1,0 +1,13 @@
+/* 
+    Document   : mycss
+    Created on : 16 Mei 13, 20:33:11
+    Author     : Fanul
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.mycenter {
+    text-align: center;
+    margin: 0 auto;
+}
+

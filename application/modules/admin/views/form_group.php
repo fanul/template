@@ -1,0 +1,111 @@
+<div id="form_groupcontrol">
+    <form id="groupcontrol_groupcontrol" class="da-form" action="javascript:fgroupcontrol_send();">
+
+        <div class="da-form-inline">
+            <input type="hidden" value="<?php if (isset($sys_group_id)) echo $sys_group_id; ?>" name="box_group_id" id="box_group_id">
+
+            <div class="da-form-row">
+                <label>Group Name</label>
+                <div class="da-form-item">
+                    <input value="<?php
+if (isset($sys_group_name))
+    echo $sys_group_name;
+?>" type="text" name="box_group_name" id="box_group_name" data-bvalidator="required">
+                </div>
+            </div>
+
+            <div class="da-form-row">
+                <label>Detail</label>
+                <div class="da-form-item">
+                    <input value="<?php
+                           if (isset($sys_group_detail))
+                               echo $sys_group_detail;
+?>" type="text" name="box_group_detail" id="box_group_detail" data-bvalidator="required" size="40"> 
+                </div>
+            </div>
+
+            <div class="da-form-row">
+                <label>Status</label>
+                <div class="da-form-item">
+                    <select data-bvalidator="required,cekcombo"  id="box_group_status" name="box_group_status" >
+                        <?php
+                        $data = $this->data_master->change_status();
+                        foreach ($data as $key => $value) {
+                            $selected = "";
+                            if (isset($sys_group_status)) {
+                                if ($value == $sys_group_status)
+                                    $selected = "selected";
+                            }
+                            echo "<option value='$key' $selected>$value</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="da-button-row">
+                <input type="submit" name="submit" class="hasDatepicker da-button blue" id="submit" name="submit" value="<?php echo $tombol; ?>"></td>
+            </div>
+
+        </div>
+
+
+    </form>
+    <script type="text/javascript" >
+        $(window).resize(function() {
+            $('#form_groupcontrol').dialog("option", "position", ['center', 'center']);
+        });
+        
+        $(document).ready(function () {
+            
+            $('#form_groupcontrol').dialog({
+                close: function(event, ui) {$(this).remove()},
+                draggable: false,
+                show: 'fade',
+                hide: 'fade',
+                title: '<?php echo $title; ?>',
+                resizable: false,
+                width: 'auto',
+                modal: true
+            });
+            
+            //bvalidator
+            $('#groupcontrol_groupcontrol').bValidator();
+            
+            //ini bugnya entah kenapa harus dikasi hasDatepicker di class div.nya
+            $('#user_last_login').datetimepicker();
+            //$('.user_last_login').datetimepicker();
+            //$('#user_last_login').datepicker({yearRange: "-100:+0",changeMonth: true,changeYear: true,dateFormat: "yy-mm-dd" <?php if (isset($groupcontrol_tanggal_lahir)) { ?> , currentText: "<?php echo $groupcontrol_tanggal_lahir; ?>" <?php } ?>});
+            //$('#groupcontrol_tanggal_kerja').datepicker({yearRange: "-100:+0",changeMonth: true,changeYear: true,dateFormat: "yy-mm-dd" <?php if (isset($groupcontrol_tanggal_lamar)) { ?> , currentText: "<?php echo $groupcontrol_tanggal_kerja; ?>" <?php } ?>});
+            //$('#groupcontrol_selesai').datepicker({yearRange: "-100:+0",changeMonth: true,changeYear: true,dateFormat: "yy-mm-dd" <?php if (isset($selesai)) { ?> , currentText: "<?php echo $selesai; ?>" <?php } ?>});
+        });
+	
+        function fgroupcontrol_send(){
+            showLoading();
+            str = $("#groupcontrol_groupcontrol").serialize();
+            nocache = Math.random();
+            var dataString = str+'&nocache='+nocache;
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo $send_url; ?>',
+                data: dataString,
+                cache: false,
+                success: function(html){
+                    if (html == 'ok'){
+                        hideLoading();
+                        $('#form_groupcontrol').dialog('close');
+                        showSukses('Proses berhasil');
+                        $("#tabel-groupcontrol").flexReload();
+                    }else{
+                        showError('Proses gagal');
+                    }
+                },
+                error:function(xhr,ajaxOptions,thrownError){
+                    hideLoading();
+                    ajaxError(xhr,ajaxOptions,thrownError);
+                }
+            })
+        }
+
+    </script>
+</div>
