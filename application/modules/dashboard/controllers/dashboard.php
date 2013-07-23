@@ -39,7 +39,44 @@ class Dashboard extends CI_Controller {
     }
 
     public function welcome() {
-        $this->load->view('welcome');
+
+        $where['news_is_display'] = '1';
+        $result = $this->query->get_list_basic('v_news',$where);
+        $output['news'] = $this->render_news($result);
+        $this->load->view('welcome',$output);
+    }
+
+    public function render_news($news=null)
+    {
+        $proced = array();
+        if(!is_null($news))
+        {
+            foreach ($news as $item ) {
+                $oke = false;
+
+                if($item->news_is_periodic)
+                {
+                    $date = getdate();
+                    $today = $date['year'].'-'.$date['mon'].'-'.$date['mday'].' '.$date['hours'].':'.$date['minutes'].':'.$date['seconds'];;
+                    if(strtotime($today) >= strtotime($item->news_start_date) && strtotime($today) <= strtotime($item->news_end_date))
+                    {
+                        $oke = true;
+                    }
+                }
+
+                if(!$item->news_is_public)
+                {
+                    if(strstr($this->session->userdata('sys_user_id'),$item->news_viewer))
+                        $oke = true;
+
+                } else $oke = true;
+
+                if($oke)
+                    $proced[] = $item;
+
+            }
+        }
+        return $proced;
     }
 
     public function render_menu() {

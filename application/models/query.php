@@ -134,8 +134,6 @@ class Query extends CI_Model {
           $select = "select * ";
           $from = "from " . $table;
           $where = " where ";
-          $group_by = " group_by ";
-
 
         //$this->db->select('*');
         //$this->db->from($table);
@@ -176,13 +174,13 @@ class Query extends CI_Model {
             }
         }
 
-        if(!is_null($group_by))
+        if($group_by!=null)
         {
-            $group_by .= $group_by.' ';
+            $group_by = ' group by '.$group_by;
         } else $group_by = '';
 
         $sql = $select . $from . $where . $group_by;
-        //echo $sql;
+
         return $this->db->query($sql);
 
         //return $this->db->get();

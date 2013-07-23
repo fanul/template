@@ -22,7 +22,7 @@ if (isset($news_title))
                            $checked = "checked=checked";
                            if (!isset($news_is_display)||$news_is_display==0)
                                $checked = "";
-?>" <?php echo $checked; ?>  type="checkbox" name="box_is_display" id="box_is_display">
+?>" <?php echo $checked; ?>  type="checkbox" name="box_is_display" id="box_is_display" value="1">
                 </div>
             </div>
 
@@ -62,9 +62,9 @@ if (isset($news_title))
                 <div class="da-form-item">
                     <input value="<?php
                            $checked = "checked=checked";
-                           if (!isset($news_is_public)||$news_is_public==0)
+                           if (isset($news_is_public)&&$news_is_public==0)
                                $checked = "";
-?>" <?php echo $checked; ?> type="checkbox" name="box_is_public" id="box_is_public">
+?>" <?php echo $checked; ?> type="checkbox" name="box_is_public" id="box_is_public" onchange="disable_viewer()">
                 </div>
             </div>
 
@@ -74,20 +74,7 @@ if (isset($news_title))
                 <label>Function</label>
                 <div class="da-form-item large">
                     <span class="formNote">Tekan Dan Tahan [ctrl] untuk memilih lebih dari 1</span>
-                    <select data-placeholder="Your Favorite Football Team" class="chzn-select" multiple="" tabindex="-1" style="max-width: 350px">
-                        <option value=""></option>
-                        <optgroup label="NFC EAST">
-                            <option>Dallas Cowboys</option>
-                            <option>New York Giants</option>
-                            <option>Philadelphia Eagles</option>
-                            <option>Washington Redskins</option>
-                        </optgroup>
-                        <optgroup label="NFC NORTH">
-                            <option>Chicago Bears</option>
-                            <option>Detroit Lions</option>
-                            <option>Green Bay Packers</option>
-                            <option>Minnesota Vikings</option>
-                        </optgroup>
+                    <select data-placeholder="Cari Nama orang disini" class="chzn-select" multiple="" tabindex="-1" style="max-width: 350px">
                     </select>
                 </div>
             </div>
@@ -120,12 +107,81 @@ if (isset($news_title))
         $(window).resize(function() {
             $('#form_newscontrol').dialog("option", "position", ['center', 'center']);
         });
-        
+
         $(document).ready(function () {
             
             //var editor = new elRTE(document.getElementById('da-ex-wysiwyg'), opts);
 
-            $('.chzn-select').chosen();
+            //$('.chzn-select').chosen();
+            $(".chzn-select").ajaxChosen({
+                type: 'POST',
+                url: '<?php echo site_url("news/news/search_employee") ?>',
+
+                dataType: 'json'
+            }, function (data) {
+
+                var results = [];
+                var groupH =[];
+
+                if(data.response=='true')
+                {
+                    for (var i = data.message.length - 1; i >= 0; i--) {
+
+                        var found = false;
+
+                        for (var j = groupH.length - 1; j >= 0; j--) {
+
+                            if(groupH[j].id == data.message[i].label)
+                            {
+                                found = true;
+                                break;
+                            }
+                        };
+
+                        if(!found)
+                        {
+                            var group = { 
+                                group: true,
+                                text: 'Group - ' + data.message[i].gname, 
+                                id: data.message[i].label,
+                                items: [] 
+                            };
+
+                            groupH.push(group);                            
+                        }
+
+
+                    };
+
+
+                    for (var i = data.message.length - 1; i >= 0; i--) {
+                        var index = -1;
+
+                       for (var j = groupH.length - 1; j >= 0; j--) {
+
+                            if(groupH[j].id == data.message[i].label)
+                            {
+                                index = j;
+                                break;
+                            }
+                        };
+
+                        groupH[index].items.push({ value: data.message[i].label, text: data.message[i].nama });
+                        
+
+                    };
+                    
+                    results.push(groupH);
+                    //alert( $.toJSON(results) );
+                    // $.each(results, function (i, val) {
+                    //     alert(val.text);
+                    // });
+
+                }
+
+
+                return groupH;
+            });
 
             $('#form_newscontrol').dialog({
                 close: function(event, ui) {$(this).remove()},
@@ -142,7 +198,7 @@ if (isset($news_title))
                     tinyMCE.init({
                         mode : "textareas",
                         plugins: [
-                        "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                        "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker",
                         "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                         "save table contextmenu directionality emoticons template paste textcolor jbimages"
                         ],
@@ -163,6 +219,7 @@ if (isset($news_title))
                      //tinyMCE.activeEditor.setContent($("#box_old_content").text());
 
                     disable_date();
+                    disable_viewer();
 
                 },
                 modal: true
@@ -222,6 +279,22 @@ if (isset($news_title))
                 
             }
         }
+
+        function disable_viewer()
+        {
+            var is_checked = $('#box_is_public').attr('checked')?true:false;
+            
+            if(is_checked)
+            {
+                $('.chzn-select').attr('disabled', true).trigger("liszt:updated");
+                //$('.chzn-container').addClass('chzn-disabled');
+            }
+            else
+            {
+                $('.chzn-select').attr('disabled', false).trigger("liszt:updated");
+                //$('.chzn-container').removeClass('chzn-disabled');
+            }
+        }        
 
         function cekcombo()
         {

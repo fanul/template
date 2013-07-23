@@ -38,7 +38,14 @@
 
         <!-- Plugin Files -->
 
-        <!-- FileInput Plugin -->
+        <!-- Swiper Plugin -->
+        <script type="text/javascript" src="<?php echo base_url(); ?>plugins/swiper/js/idangerous.swiper-2.0.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>plugins/swiper/js/idangerous.swiper.scrollbar-2.0.js"></script>
+
+        <link rel="stylesheet" href="<?php echo base_url(); ?>plugins/swiper/css/idangerous.swiper.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>plugins/swiper/css/idangerous.swiper.scrollbar.css" />
+
+        <!-- file input -->
         <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.fileinput.js"></script>
         <!-- Placeholder Plugin -->
         <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.placeholder.js"></script>
@@ -62,7 +69,6 @@
 
         <!-- TinyMCE -->
         <script type="text/javascript" src="<?php echo base_url(); ?>plugins/tinymce4/tinymce.min.js"></script>
-        
         
         <!-- ELRTE -->
         <script type="text/javascript" src="<?php echo base_url(); ?>plugins/elrte/js/elrte.full.js"></script>

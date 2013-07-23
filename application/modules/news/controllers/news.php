@@ -18,13 +18,14 @@ class News extends CI_Controller {
 
         $colModel['news_id'] = array('Id News', 100, TRUE, 'center', 0, TRUE);
         $colModel['sys_user_name'] = array('Pembuat', 100, TRUE, 'center', 1);
-        $colModel['news_publish_date'] = array('Tanggal Dibuat', 100, TRUE, 'center', 1);
-        $colModel['news_edit_date'] = array('Terakhir Diperbarui', 100, TRUE, 'center', 1);
+        $colModel['news_publish_date_indo'] = array('Tanggal Dibuat', 100, TRUE, 'center', 1);
+        $colModel['news_edit_date_name'] = array('Terakhir Diperbarui', 100, TRUE, 'center', 1);
+        $colModel['news_user_edit'] = array('Diperbarui Oleh', 100, TRUE, 'center', 1);
         $colModel['news_title'] = array('Judul', 100, TRUE, 'center', 1);
         $colModel['news_is_display'] = array('Ditampilkan?', 100, TRUE, 'center', 1);
         $colModel['news_is_periodic'] = array('Periodik?', 100, TRUE, 'center', 1);
-        $colModel['news_start_date'] = array('Tanggal Mulai Ditampilkan', 100, TRUE, 'center', 1);
-        $colModel['news_end_date'] = array('Tanggal Akhir Ditampilkan', 100, TRUE, 'center', 1);
+        $colModel['news_start_date_indo'] = array('Tanggal Mulai Ditampilkan', 100, TRUE, 'center', 1);
+        $colModel['news_end_date_indo'] = array('Tanggal Akhir Ditampilkan', 100, TRUE, 'center', 1);
         $colModel['news_is_public'] = array('Publik?', 100, TRUE, 'center', 1);
         $colModel['news_viewer'] = array('Daftar Pembaca', 100, TRUE, 'center', 1);
 
@@ -98,7 +99,7 @@ class News extends CI_Controller {
     }
 
     public function datatable($param = NULL) {
-        $valid_fields = array('sys_user_name', 'news_publish_date_indo', 'news_title', 'news_is_display', 'news_is_periodic'
+        $valid_fields = array('sys_user_name', 'news_publish_date_indo', 'news_edit_date_indo', 'news_user_edit_name', 'news_title', 'news_is_display', 'news_is_periodic'
             , 'news_start_date_indo', 'news_end_date_indo', 'news_is_public', 'news_viewer');
         $this->flexigrid->validate_post('news_id', 'desc', $valid_fields);
         $records = $this->query->get_list_table('v_news', 'news_id', $param);
@@ -115,7 +116,8 @@ class News extends CI_Controller {
             $record_items[] = array();
 
         foreach ($result as $row) {
-            $record_items[] = array($row->news_id, $row->news_id, $row->sys_user_name, $row->news_publish_date_indo, $row->news_title,
+            $record_items[] = array($row->news_id, $row->news_id, $row->sys_user_name, $row->news_publish_date_indo, 
+                $row->news_edit_date_indo,$row->news_user_edit_name, $row->news_title,
                 $row->news_is_display, $row->news_is_periodic, $row->news_start_date_indo, $row->news_end_date_indo,
                 $row->news_is_public, $row->news_viewer);
         }
@@ -182,20 +184,28 @@ class News extends CI_Controller {
 
     public function add() {
 
+        if(isset($_POST['box_is_display']))
+            $data['news_is_display'] = '1';
+
+        if(isset($_POST['box_is_periodic']))
+            $data['news_is_periodic'] = '1';     
+
+        if(isset($_POST['box_is_public']))
+            $data['news_is_public'] = '1';
+
+        if(isset($_POST['box_news_start_date']))
+            $data['news_start_date'] = date_format(date_create($this->input->post('box_news_start_date')), 'Y-m-d h:i:s');
+        if(isset($_POST['box_news_end_date']))
+            $data['news_end_date'] = date_format(date_create($this->input->post('box_news_end_date')), 'Y-m-d h:i:s');
+
         $data['sys_user_id'] = $this->session->userdata('sys_user_id');
+        $data['news_user_edit'] = $data['sys_user_id'];
         $data['news_title'] = $this->input->post('box_news_title');
-        $data['news_is_display'] = $this->input->post('box_news_title');
-        $data['news_is_periodic'] = $this->input->post('box_news_is_periodic');
-        $data['news_start_date'] = date_format(date_create($this->input->post('box_news_start_date')), 'Y-m-d h:i:s');
-        $data['news_end_date'] = date_format(date_create($this->input->post('box_news_end_date')), 'Y-m-d h:i:s');
-        $data['news_is_public'] = $this->input->post('box_news_is_public');
         $data['news_viewer'] = $this->input->post('box_news_viewer');
         $data['news_content'] = htmlspecialchars($this->input->post('box_news_content',false));
 
-        $date = getdate();
-        $data['news_publish_date'] = $date['year'].'-'.$date['month'].'-'.$date['mday'].' '.
-                $date['hours'].':'.$date['minutes'].':'.$date['seconds'];
-        
+        $data['news_publish_date'] = date_format(date_create(), 'Y-m-d h:i:s');
+        $data['news_edit_date'] = $data['news_publish_date'];
 
         $id = $this->db->insert('news', $data);
 
@@ -207,15 +217,28 @@ class News extends CI_Controller {
     public function edit() {
 
         //$data['sys_user_id'] = $this->input->post('box_sys_user_id');
+
+        if(isset($_POST['box_is_display']))
+            $data['news_is_display'] = '1';
+
+        if(isset($_POST['box_is_periodic']))
+            $data['news_is_periodic'] = '1';     
+
+        if(isset($_POST['box_is_public']))
+            $data['news_is_public'] = '1';
+
+        if(isset($_POST['box_news_start_date']))
+            $data['news_start_date'] = date_format(date_create($this->input->post('box_news_start_date')), 'Y-m-d h:i:s');
+        if(isset($_POST['box_news_end_date']))
+            $data['news_end_date'] = date_format(date_create($this->input->post('box_news_end_date')), 'Y-m-d h:i:s');
+
         $data['news_publish_date'] = date_format(date_create($this->input->post('box_news_publish_date')), 'Y-m-d h:i:s');
         $data['news_title'] = $this->input->post('box_news_title');
-        $data['news_is_display'] = $this->input->post('box_news_is_display');
-        $data['news_is_periodic'] = $this->input->post('box_news_is_periodic');
-        $data['news_start_date'] = date_format(date_create($this->input->post('box_news_start_date')), 'Y-m-d h:i:s');
-        $data['news_end_date'] = date_format(date_create($this->input->post('box_news_end_date')), 'Y-m-d h:i:s');
-        $data['news_is_public'] = $this->input->post('box_news_is_public');
         $data['news_viewer'] = $this->input->post('box_news_viewer');
         $data['news_content'] = htmlspecialchars($this->input->post('box_news_content',false));
+
+        $data['news_user_edit'] = $this->session->userdata('sys_user_id');
+        $data['news_edit_date'] = date_format(date_create(), 'Y-m-d h:i:s');
 
         $id = $this->db->update('news', $data, array('news_id' => $this->input->post('box_news_id')));
 
@@ -239,35 +262,35 @@ class News extends CI_Controller {
         echo 'ok';
     }
 
-    public function search_grouped_employee() {
+      public function search_employee() {
         $keyword = $this->input->post('term');
 
         $data['response'] = 'false';
 
-        $search['hr_employee_nik'] = $keyword;
-        $search['hr_employee_nick_name'] = $keyword;
         $search['sys_user_name'] = $keyword;
-        $search['sys_group_name'] = $keyword;
+        //$search['hr_employee_nick_name'] = $keyword;
+        $query = $this->query->lookup_table_or('v_user', $search);
 
-        $group_by = 'sys_group_id';
-
-        $query = $this->query->lookup_table_or('v_employee', $search, null, null, null, $group_by);
-
-        $result = '<option value=""></option>';
-        if ($query->num_rows() > 0) {
-            $grouped = null;
+        if($query->num_rows() > 0)
+        {
+            $data['response'] = 'true';
+            $data['message'] = array();
             foreach ($query->result() as $row) {
-
-                if($grouped != $row->sys_group_id)
-                {
-                    $result .= '<optgroup label="'.$row->sys_group_name.'">';
-                    $grouped = $row->sys_group_id;
-                }
-
-                $result.='<option>'.$row->hr_employee_nick_name.'</option>';
+                // $data[] = $row->hr_employee_nick_name;
+                $data['message'][] = array('label' => $row->sys_user_id, 'nama' => $row->sys_user_name,
+                    'group' => $row->sys_group_id, 'gname' => $row->sys_group_name);
             }
         }
-        echo $result;
+
+
+        // if ($query->num_rows() > 0) {
+        //     $data['response'] = 'true';
+        //     $data['message'] = array();
+        //     foreach ($query->result() as $row) {
+        //         $data['message'][] = array('label' => $row->hr_employee_nik, 'nama' => $row->hr_employee_nick_name);
+        //     }
+        // }
+        echo json_encode($data);
     }
 
 }
