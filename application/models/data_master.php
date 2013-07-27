@@ -118,6 +118,26 @@ class Data_master extends CI_Model {
         return $array;
     }
 
+        public function worktype() {
+
+            // 1 = datang kerja
+            // 2 = pulang istirahat
+            // 3 = kembali istirahat
+            // 5 = pulang kerja
+            // 6 = ijin
+            // 7 = tugas kerja
+
+        $array[] = '';
+        $array['1'] = 's';
+        $array[''] = 'SMP';
+        $array['SMA'] = 'SMA';
+        $array['D3'] = 'D3';
+        $array['S1'] = 'S1';
+        $array['S2'] = 'S2';
+        return $array;
+        //return array("", 'SD', 'SMP', 'SMA', 'D3', 'S1', 'S2');
+    }
+
     public function karyawan_status() {
         $array[] = '';
         $array['aktif'] = 'aktif';
@@ -268,6 +288,15 @@ class Data_master extends CI_Model {
         $array['Staff'] = 'Staff';
         $array['Spv'] = 'Spv';
         $array['Manajer'] = 'Manajer';
+        return $array;
+    }
+
+    public function event_repeat() {
+        $array[''] = '';
+        $array['hari'] = 'hari';
+        $array['minggu'] = 'minggu';
+        $array['bulan'] = 'bulan';
+        $array['tahun'] = 'tahun';
         return $array;
     }
 

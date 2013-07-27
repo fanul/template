@@ -222,7 +222,11 @@ class News extends CI_Controller {
             $data['news_is_display'] = '1';
 
         if(isset($_POST['box_is_periodic']))
+        {
             $data['news_is_periodic'] = '1';     
+            $data['news_start_date'] = '';
+            $data['news_end_date'] = '';
+        }
 
         if(isset($_POST['box_is_public']))
             $data['news_is_public'] = '1';
@@ -260,6 +264,7 @@ class News extends CI_Controller {
             $this->log->insert("Menghapus News " . $record->news_title, $id, 'news');
         }
         echo 'ok';
+
     }
 
       public function search_employee() {

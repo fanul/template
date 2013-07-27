@@ -28,10 +28,10 @@ class Agenda extends CI_Controller {
           $this->load->library('elfinder_lib', $opts);
          * 
          */
-        $this->load->view('main_agenda');
-    }
+          $this->load->view('main_agenda');
+      }
 
-    public function manage() {
+      public function manage() {
         $gridId = "tabel-agendacontrol";
         $searchId = "searchagendacontrol";
         $output['title'] = 'Data Master Agenda Control';
@@ -54,7 +54,7 @@ class Agenda extends CI_Controller {
             'showTableToggleBtn' => false,
             'singleSelect' => false,
             'hide' => 'true'
-        );
+            );
         $buttons[] = array('Pilih Semua', 'add', 'dataagendacontrol');
         $buttons[] = array('Reset Pilihan', 'delete', 'dataagendacontrol');
         $buttons[] = array('separator');
@@ -88,14 +88,14 @@ class Agenda extends CI_Controller {
           $gridColor['condition'] = array('Suspend'=>'black','Idle'=>'green');
          */
 
-        $site = site_url("event/agenda/datatable/" . $params);
+          $site = site_url("event/agenda/datatable/" . $params);
 
-        $onsubmit = 'function(){$("#' . $gridId . '").flexOptions({params: [{name:"callId", value:"' . $gridId . '"}].concat($("#' . $searchId . '").serializeArray())});return true}';
-        $grid_js = build_grid_js($gridId, $site, $colModel, 'agenda_id', 'asc', $gridParams, $buttons, $onsubmit);
+          $onsubmit = 'function(){$("#' . $gridId . '").flexOptions({params: [{name:"callId", value:"' . $gridId . '"}].concat($("#' . $searchId . '").serializeArray())});return true}';
+          $grid_js = build_grid_js($gridId, $site, $colModel, 'agenda_id', 'asc', $gridParams, $buttons, $onsubmit);
 
-        $output['js_grid'] = $grid_js;
+          $output['js_grid'] = $grid_js;
 
-        if (isset($_POST['name_selector']))
+          if (isset($_POST['name_selector']))
             $output['name_selector'] = $_POST['name_selector'];
 
         if (isset($_POST['detail_selector']))
@@ -119,7 +119,7 @@ class Agenda extends CI_Controller {
         } else if (!is_null($param)) {
             $records['record_count'] = count($result);
         } else if ($result == NULL)
-            $record_items[] = array();
+        $record_items[] = array();
 
         foreach ($result as $row) {
             $record_items[] = array($row->agenda_id, $row->agenda_id,
@@ -140,7 +140,7 @@ class Agenda extends CI_Controller {
             $output['form'] = '';
             $output['send_url'] = site_url("event/agenda/add");
             //$output['karyawan_nik'] = $this->generate_nik();
-            $this->load->view('form_agenda', $output);
+            $this->load->view('form_agenda2', $output);
         }
         else
             redirect(base_url());
@@ -227,109 +227,201 @@ class Agenda extends CI_Controller {
 
     public function add() {
 
+        if(!isset($_POST['box_is_forever']))
+            $data['agenda_end_date'] = date_format(date_create($this->input->post('box_agenda_end_date_indo')), 'Y-m-d');
+
+        $data['agenda_start_date'] = date_format(date_create($this->input->post('box_agenda_start_date_indo')), 'Y-m-d');
+        $data['agenda_start_time'] = $this->input->post('box_agenda_start_time');
+        $data['agenda_end_time'] = $this->input->post('box_agenda_end_time');
+
+
         $data['event_type_id'] = $this->input->post('box_event_type_id');
         $data['agenda_name'] = $this->input->post('box_agenda_name');
         $data['agenda_det'] = $this->input->post('box_agenda_det');
-        $data['agenda_start_date'] = date_format(date_create($this->input->post('box_agenda_start_date_indo')), 'Y-m-d h:i:s');
-        $data['agenda_end_date'] = date_format(date_create($this->input->post('box_agenda_end_date_indo')), 'Y-m-d h:i:s');
         $data['agenda_cost'] = $this->input->post('box_agenda_cost');
         $data['sys_user_id'] = $this->session->userdata('sys_user_id');
 
-        $id = $this->db->insert('agenda', $data);
+        $repeat['hari'] ='';
+        $repeat['minggu'] = '';
+        $repeat['bulan'] = '';
+        $repeat['tahun'] = '';
 
-        $this->log->insert("Menambahkan Track Type " . $data['agenda_name'], $id, 'agenda');
+        if(isset($_POST['box_agenda_repeat']) && $_POST['box_agenda_repeat']!='')
+        {
+            $every = $this->input->post('box_agenda_repeat');
 
-        echo 'ok';
-    }
-
-    public function edit() {
-
-        $data['event_type_id'] = $this->input->post('box_event_type_id');
-        $data['agenda_name'] = $this->input->post('box_agenda_name');
-        $data['agenda_det'] = $this->input->post('box_agenda_det');
-        $data['agenda_start_date'] = date_format(date_create($this->input->post('box_agenda_start_date_indo')), 'Y-m-d h:i:s');
-        $data['agenda_end_date'] = date_format(date_create($this->input->post('box_agenda_end_date_indo')), 'Y-m-d h:i:s');
-        $data['agenda_cost'] = $this->input->post('box_agenda_cost');
-
-        $id = $this->db->update('agenda', $data, array('agenda_id' => $this->input->post('box_agenda_id')));
-
-        $this->log->insert("Mengedit Track Type " . $data['agenda_name'], $id, 'agenda');
-
-        echo 'ok';
-    }
-
-    public function delete() {
-        $str = $this->input->post('items');
-
-        $text = '';
-        $items = explode('|', substr($str, 0, -1));
-
-        foreach ($items as $item => $value) {
-            $record = $this->query->get_detail('agenda', 'agenda_id', $value);
-            $id = $this->db->delete('agenda', array('agenda_id' => $value));
-
-            $this->log->insert("Menghapus Group " . $record->agenda_name, $id, 'agenda');
-        }
-        echo 'ok';
-    }
-
-    public function status() {
-
-        $data['agenda_status'] = $this->input->post('wfstatus_change');
-        $str = $this->input->post('items');
-
-        $text = '';
-        $items = explode('|', substr($str, 0, -1));
-
-        foreach ($items as $item => $value) {
-            $detail = $this->query->get_detail('agenda', 'agenda_id', $value);
-            $id = $this->db->update('agenda', $data, array('agenda_id' => $value));
-            $this->log->insert("Update Status Group " . $detail->agenda_name, $id, 'agenda');
-        }
-
-        echo 'ok';
-    }
-
-    public function popup($id) {
-        $output['url'] = site_url('dc\agenda\cetak_individu_pdf' . '\\' . $id);
-        $this->load->view('popup', $output);
-    }
-
-    public function printing($id) {
-        $params = explode('PRINTING', $id);
-        if (count($params) > 1) {
-            $via = $this->my_encrypt->decode($params[1]);
-            $id = $this->my_encrypt->decode($params[0]);
-
-            $record = $this->query->get_detail('agenda', 'agenda_id', $id);
-            $output['data'] = $record;
-            $output['id'] = $id;
-
-            switch ($via) {
-                case 'Web':
-                    $this->load->view('print\print_agenda', $output);
-                    break;
-                case 'Web - Auto Print':
-                    $output['auto'] = true;
-                    $this->load->view('print\print_agenda', $output);
-                    break;
-                case 'Pdf' :
-                    $this->printing_pdf($id);
-                    break;
-                case 'Excel' :
-                    $this->printing_excel($id);
-                    break;
-                default: break;
+            if($every=='hari')
+            {
+                $repeat['hari'] = $this->input->post('box_agenda_freq');
             }
-        } else
-            show_404();
+            else if($every=='minggu')
+            {
+                $repeat['minggu'] = $this->input->post('box_agenda_freq');
+            }
+            else if($every=='bulan')
+            {
+                $repeat['bulan'] = $this->input->post('box_agenda_freq');
+            }            
+            else if($every=='tahun')
+            {
+                $repeat['tahun'] = $this->input->post('box_agenda_freq');
+            }
+            $data['agenda_repeat'] = $every;
+        }
+
+        $data['agenda_repeat_desk'] = json_encode($repeat);
+        $data['agenda_occurrence_desk'] = $this->input->post('box_repeat_int');
+
+        
+        if(isset($_POST['box_is_forever']))
+            $data['agenda_occurrence'] = 'selamanya';
+        else if(isset($_POST['box_is_repeat_t']))
+           $data['agenda_occurrence'] = 'sampai-tanggal';        
+       else if(isset($_POST['box_is_repeat_n']))
+        $data['agenda_occurrence'] = 'n-kali';
+
+    $id = $this->db->insert('agenda', $data);
+
+    $this->log->insert("Menambahkan Track Type " . $data['agenda_name'], $id, 'agenda');
+
+        //print_r($data);
+    echo 'ok';
+}
+
+public function edit() {
+
+ if(!isset($_POST['box_is_forever']))
+    $data['agenda_end_date'] = date_format(date_create($this->input->post('box_agenda_end_date_indo')), 'Y-m-d');
+
+$data['agenda_start_date'] = date_format(date_create($this->input->post('box_agenda_start_date_indo')), 'Y-m-d');
+$data['agenda_start_time'] = $this->input->post('box_agenda_start_time');
+$data['agenda_end_time'] = $this->input->post('box_agenda_end_time');
+
+
+$data['event_type_id'] = $this->input->post('box_event_type_id');
+$data['agenda_name'] = $this->input->post('box_agenda_name');
+$data['agenda_det'] = $this->input->post('box_agenda_det');
+$data['agenda_cost'] = $this->input->post('box_agenda_cost');
+$data['sys_user_id'] = $this->session->userdata('sys_user_id');
+
+$repeat['hari'] ='';
+$repeat['minggu'] = '';
+$repeat['bulan'] = '';
+$repeat['tahun'] = '';
+
+if(isset($_POST['box_agenda_repeat']) && $_POST['box_agenda_repeat']!='')
+{
+    $every = $this->input->post('box_agenda_repeat');
+
+    if($every=='hari')
+    {
+        $repeat['hari'] = $this->input->post('box_agenda_freq');
+    }
+    else if($every=='minggu')
+    {
+        $repeat['minggu'] = $this->input->post('box_agenda_freq');
+    }
+    else if($every=='bulan')
+    {
+        $repeat['bulan'] = $this->input->post('box_agenda_freq');
+    }            
+    else if($every=='tahun')
+    {
+        $repeat['tahun'] = $this->input->post('box_agenda_freq');
+    }
+    $data['agenda_repeat'] = $every;
+}
+
+$data['agenda_repeat_desk'] = json_encode($repeat);
+$data['agenda_occurrence_desk'] = $this->input->post('box_repeat_int');
+
+
+if(isset($_POST['box_is_forever']))
+    $data['agenda_occurrence'] = 'selamanya';
+else if(isset($_POST['box_is_repeat_t']))
+   $data['agenda_occurrence'] = 'sampai-tanggal';        
+else if(isset($_POST['box_is_repeat_n']))
+    $data['agenda_occurrence'] = 'n-kali';
+
+$id = $this->db->update('agenda', $data, array('agenda_id' => $this->input->post('box_agenda_id')));
+
+$this->log->insert("Mengedit Track Type " . $data['agenda_name'], $id, 'agenda');
+
+echo 'ok';
+}
+
+public function delete() {
+    $str = $this->input->post('items');
+
+    $text = '';
+    $items = explode('|', substr($str, 0, -1));
+
+    foreach ($items as $item => $value) {
+        $record = $this->query->get_detail('agenda', 'agenda_id', $value);
+        $id = $this->db->delete('agenda', array('agenda_id' => $value));
+
+        $this->log->insert("Menghapus Group " . $record->agenda_name, $id, 'agenda');
+    }
+    echo 'ok';
+}
+
+public function status() {
+
+    $data['agenda_status'] = $this->input->post('wfstatus_change');
+    $str = $this->input->post('items');
+
+    $text = '';
+    $items = explode('|', substr($str, 0, -1));
+
+    foreach ($items as $item => $value) {
+        $detail = $this->query->get_detail('agenda', 'agenda_id', $value);
+        $id = $this->db->update('agenda', $data, array('agenda_id' => $value));
+        $this->log->insert("Update Status Group " . $detail->agenda_name, $id, 'agenda');
     }
 
-    public function printing_pdf($id) {
-        $this->load->helper('pdf');
+    echo 'ok';
+}
+
+public function popup($id) {
+    $output['url'] = site_url('dc\agenda\cetak_individu_pdf' . '\\' . $id);
+    $this->load->view('popup', $output);
+}
+
+public function printing($id) {
+    $params = explode('PRINTING', $id);
+    if (count($params) > 1) {
+        $via = $this->my_encrypt->decode($params[1]);
+        $id = $this->my_encrypt->decode($params[0]);
 
         $record = $this->query->get_detail('agenda', 'agenda_id', $id);
         $output['data'] = $record;
+        $output['id'] = $id;
+
+        switch ($via) {
+            case 'Web':
+            $this->load->view('print\print_agenda', $output);
+            break;
+            case 'Web - Auto Print':
+            $output['auto'] = true;
+            $this->load->view('print\print_agenda', $output);
+            break;
+            case 'Pdf' :
+            $this->printing_pdf($id);
+            break;
+            case 'Excel' :
+            $this->printing_excel($id);
+            break;
+            default: break;
+        }
+    } else
+    show_404();
+}
+
+public function printing_pdf($id) {
+    $this->load->helper('pdf');
+
+    $record = $this->query->get_detail('agenda', 'agenda_id', $id);
+    $output['data'] = $record;
         $file_pdf = $this->load->view('print\print_agenda', $output, TRUE); //Save as variable
         pdf_create($file_pdf, 'Printing');
     }
@@ -359,18 +451,18 @@ class Agenda extends CI_Controller {
                 'outline' => array(
                     'style' => PHPExcel_Style_Border::BORDER_THIN,
                     'color' => array('argb' => 'FF000000'),
+                    ),
                 ),
-            ),
-        );
+            );
 
         $allBorder = array(
             'borders' => array(
                 'allborders' => array(
                     'style' => PHPExcel_Style_Border::BORDER_THIN,
                     'color' => array('argb' => 'FF000000'),
+                    ),
                 ),
-            ),
-        );
+            );
 
         $row = 2;
 
@@ -387,38 +479,246 @@ class Agenda extends CI_Controller {
     }
 
     public function notification() {
-        
+
     }
 
-    public function get_agenda_event($start, $end) {
-        $query = "select * from v_agenda 
-            where agenda_start_date >= '$start' and agenda_end_date <= '$end'";
-        return $this->db->query($query)->result();
+    function generate_event($input) {
+        $output = array(
+            'id' => $input->agenda_id,
+            'title' => $input->agenda_name,
+            'start' => $input->agenda_start_date,
+            'end' => $input->agenda_end_date,
+            'allDay' => false,
+        //'allDay' => ($input->allDay) ? true : false,
+        //'className' => "cat{$repeats}",
+        //'editable' => true,
+            'repeat_i' => $input->agenda_repeat_int,
+            'repeat_f' => $input->agenda_repeat_freq,
+            'repeat_e' => $input->agenda_repeat_end
+            );
+
+        return $output;
     }
 
-    public function generate_calendar_json() {
+    function get_agenda_event($start, $end) {
 
-        $start = date('Y-m-d H:i:s', $this->input->post('start'));
-        $end = date('Y-m-d H:i:s', $this->input->post('end'));
 
-        $record = $this->get_agenda_event($start, $end);
-        //echo $this->db->last_query();
+     $query = "SELECT * from v_agenda WHERE
+     (
+        (agenda_start_date >= '$start' AND agenda_end_date < '$end') OR
+        (agenda_end_date >= '$start' AND agenda_end_date < '$end') OR
+        (agenda_start_date <= '$start' AND agenda_end_date >= '$end') OR
+        (agenda_start_date >= '$start' AND agenda_start_date <= '$end' AND agenda_end_date >= '$start') OR
+        (agenda_start_date < '$end' AND agenda_repeat !='' AND (agenda_end_date='' OR ISNULL(agenda_end_date)))
+        )
+ORDER BY agenda_start_date;
+";
+return $this->db->query($query)->result();
+}
+
+public function process_events($events, $start, $end, $readonly=null)
+{
+    if ($events) {
+        $output = array();
+        foreach ($events as $event) {
+            $event->agenda_view_start = $start;
+            $event->agenda_view_end = $end;
+            $event = $this->process_event($event, $readonly, true);
+            if (is_array($event)) {
+                foreach ($event as $repeat) {
+                    array_push($output, $repeat);
+                }
+            } else {
+                array_push($output, $event);
+            }
+        }
+        $this->render_json($output);
+        return $output;
+    }        
+}
+
+function process_event($input, $readonly = false, $queue = false) {
+    $output = array();
+    if ($repeats = $this->generate_repeating_event($input)) {
+        foreach ($repeats as $repeat) {
+            array_push($output, $this->generate_event($repeat));
+        }
+    } else {
+        if($input->agenda_repeat=='')
+        {
+            $input->agenda_start_date = $input->agenda_start_date.' '.$input->agenda_start_time;
+            $input->agenda_end_date = $input->agenda_end_date.' '.$input->agenda_end_time;
+            array_push($output, $this->generate_event($input));
+        }
+    }
+    return $output;
+    //$this->render_json($output);
+}
+
+function generate_repeating_event($event) {
+
+    $repeat_desk = json_decode($event->agenda_repeat_desk);
+
+    if ($event->agenda_repeat == "hari") {
+        $event->agenda_repeat_int =0;
+        $event->agenda_repeat_freq = $repeat_desk->hari;
+    }
+    if ($event->agenda_repeat == "bulan") {
+        $event->agenda_repeat_int =2;        
+        $event->agenda_repeat_freq = $repeat_desk->bulan;
+    }
+    if ($event->agenda_repeat == "minggu") {
+        $event->agenda_repeat_int =1;                
+        $event->agenda_repeat_freq = $repeat_desk->minggu;
+    }
+    if ($event->agenda_repeat == "tahun") {
+        $event->agenda_repeat_int =3;                        
+        $event->agenda_repeat_freq = $repeat_desk->tahun;
+    }
+
+    if ($event->agenda_occurrence == "n-kali") {
+        if($event->agenda_repeat_int == 0){
+            $ext = "days";
+        }
+        if($event->agenda_repeat_int == 1){
+            $ext = "weeks";
+        }
+        if($event->agenda_repeat_int == 2){
+            $ext = "months";
+        }
+        if($event->agenda_repeat_int == 3){
+            $ext = "years";
+        }
+        $event->agenda_repeat_end =  date('Y-m-d',strtotime("+" . $event->agenda_occurrence_desk*$event->agenda_repeat_freq . " ".$ext));
+    } else if ($event->agenda_occurrence == "selamanya") {
+        $event->agenda_repeat_end = "2111-11-11";
+    } else if ($event->agenda_occurrence == "sampai-tanggal") {
+        $event->agenda_repeat_end = $event->agenda_end_date;
+    }
+
+    if ($event->agenda_repeat_freq) {
+        $event_start = strtotime($event->agenda_start_date.' '.$event->agenda_start_time);
+        $event_duration = strtotime($event->agenda_start_date.' '.$event->agenda_end_time);
+        $event_end = strtotime($event->agenda_end_date.' '.$event->agenda_end_time);
+        $repeat_end = strtotime($event->agenda_repeat_end) + 86400;
+        $view_start = strtotime($event->agenda_view_start);
+        $view_end = strtotime($event->agenda_view_end);
+
+        $repeats = array();
+
+        while ($event_start < $repeat_end) {
+            if ($event_start >= $view_start && $event_start <= $view_end) {
+                $event = clone $event; // clone event details and override dates
+                $event->agenda_start_date = date('Y-m-d H:i:s', $event_start);
+                $event->agenda_end_date = date('Y-m-d H:i:s', $event_duration);
+                array_push($repeats, $event);
+            }
+            $event_start = $this->get_next_date($event_start, $event->agenda_repeat_freq, $event->agenda_repeat_int);
+            $event_duration= $this->get_next_date($event_duration, $event->agenda_repeat_freq, $event->agenda_repeat_int);
+        }
+        return $repeats;
+    }
+    return false;
+}
+
+function get_next_date($date, $freq, $int) {
+    if ($int == 0)
+        return strtotime("+" . $freq . " days", $date);
+    if ($int == 1)
+        return strtotime("+" . $freq . " weeks", $date);
+    if ($int == 2)
+        return get_next_month($date, $freq);
+    if ($int == 3)
+        return get_next_year($date, $freq);
+}
+
+function get_next_month($date, $n = 1) {
+    $newDate = strtotime("+{$n} months", $date);
+    // adjustment for events that repeat on the 29th, 30th and 31st of a month
+    if (date('j', $date) !== (date('j', $newDate))) {
+        $newDate = strtotime("+" . $n + 1 . " months", $date);
+    }
+    return $newDate;
+}
+
+function get_next_year($date, $n = 1) {
+    $newDate = strtotime("+{$n} years", $date);
+    // adjustment for events that repeat on february 29th
+    if (date('j', $date) !== (date('j', $newDate))) {
+        $newDate = strtotime("+" . $n + 3 . " years", $date);
+    }
+    return $newDate;
+}
+
+function render_json($output) {
+    header("Content-Type: application/json");
+    echo json_encode($this->cleanse_output($output));
+}
+
+
+function cleanse_output($output) {
+    if (is_array($output)) {
+        array_walk_recursive($output, create_function('&$val', '$val = trim(stripslashes($val));'));
+    } else {
+        $output = stripslashes($output);
+    }
+    return $output;
+}
+
+function parse_json($output)
+{
+    print_r($output);
+    return str_replace('][', ',', $json);
+}
+
+public function get_basic($start, $end) {
+    $query = "select * from v_agenda 
+    where agenda_start_date >= '$start' and agenda_start_date <= '$end'";
+    return $this->db->query($query)->result();
+}
+
+function get_agenda_alt($start, $end) {
+
+    $query = "SELECT * from v_agenda WHERE
+    (
+        (agenda_start_date >= '$start' AND agenda_start_date <= '$end') AND
+        (agenda_end_date >= '$start') OR
+        (agenda_start_date<= '$end' AND agenda_repeat<>'' AND (agenda_end_date='' OR ISNULL(agenda_end_date)))
+        )
+ORDER BY agenda_start_date;
+";
+return $this->db->query($query)->result();
+}
+
+public function generate_calendar_json() {
+
+    $start = date('Y-m-d', $this->input->post('start'));
+    $end = date('Y-m-d', $this->input->post('end'));
+
+        //echo $start.' - '.$end;
+
+    $record = $this->get_agenda_event($start, $end);
+    $this->process_events($record, $start, $end);
+     //   echo $this->db->last_query();
         //$record = $this->query->get_list_basic('v_agenda');
         //print_r($record);
-        $json = array();
-        foreach ($record as $item) {
-            $json[] = array(
-                'id' => $item->agenda_id,
-                'title' => $item->agenda_name,
-                'start' => $item->agenda_start_date,
-                'end' => $item->agenda_end_date,
-                'allDay' => false,
-            );
-        }
 
-        header("Content-Type: application/json");
-        echo json_encode($json);
-    }
+
+        // $record = $this->get_agenda_alt($start, $end);
+        // $json = array();
+        // foreach ($record as $item) {
+        //     $json[] = array(
+        //         'id' => $item->agenda_id,
+        //         'title' => $item->agenda_name,
+        //         'start' => $item->agenda_start_date.' '.$item->agenda_start_time,
+        //         'end' => $item->agenda_end_date.' '.$item->agenda_end_time,
+        //         'allDay' => false,
+        //     );
+        // }
+
+        // header("Content-Type: application/json");
+        // echo json_encode($json);
+}
 
 }
 

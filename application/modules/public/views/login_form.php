@@ -87,6 +87,7 @@
 
         <div id="da-login">
             <div id="da-login-box-wrapper">
+                <?php //echo date("d-m-Y H:i:s", time()); ?>
                 <div id="da-login-top-shadow">
                 </div>
                 <div id="da-login-box">

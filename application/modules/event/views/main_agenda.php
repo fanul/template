@@ -33,7 +33,7 @@
                                     week: "MMM d[ yyyy]{ 'to'[ MMM] d, yyyy}", // Sep 7 - 13 2009
                                     day: 'ddd, MMMM d, yyyy'                  // Tuesday, Sep 8, 2009
                                 },
-                                allDayText:'All Day',
+                                allDaySlot: false,
                                 header:{
                                     left:   'prev title next, today',
                                     center: '',

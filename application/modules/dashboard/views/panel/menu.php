@@ -51,7 +51,8 @@ $admin = $this->session->userdata('sys_group_name') == 'admin' ? TRUE : FALSE;
                 </a>
                 <ul class="closed">
                     <?php if ($admin || isset($page['hr/employee'])) { ?> <li><a href="javascript:loadPage('#da-content-wrap','<?php echo site_url("hr/employee") ?>')">karyawan</a></li> <?php } ?> 
-                    <?php if ($admin || isset($page['hr/track_type'])) { ?> <li><a href="javascript:loadPage('#da-content-wrap','<?php echo site_url("hr/track_type") ?>')">Track Type</a></li> <?php } ?> 
+                    <?php if ($admin || isset($page['hr/work_log'])) { ?> <li><a href="javascript:loadPage('#da-content-wrap','<?php echo site_url("hr/work_log") ?>')">Work Log</a></li> <?php } ?> 
+                    <?php if ($admin || isset($page['hr/track_type'])) { ?> <li><a href="javascript:loadPage('#da-content-wrap','<?php echo site_url("hr/track_type") ?>')">Track Type</a></li> <?php } ?>
                 </ul>
             </li>
         <?php } ?>
@@ -102,6 +103,21 @@ $admin = $this->session->userdata('sys_group_name') == 'admin' ? TRUE : FALSE;
                     <?php if (($admin || isset($page['news/news']))) { ?> <li><a href="javascript:loadPage('#da-content-wrap','<?php echo site_url("news/news") ?>')">Pengelola Berita</a></li> <?php } ?> 
                 </ul>
             </li>
+        <?php } ?>
+
+        <?php if ($admin || isset($priv['option'])) { ?> 
+        <li>
+            <a href="#">
+                <!-- Icon Container -->
+                <span class="da-nav-icon">
+                    <img src="images/icons/black/32/help.png" alt="Option" />
+                </span>
+                Option
+            </a>
+            <ul class="closed">
+                <?php if ($admin || isset($page['option/work_shift'])) { ?>  <li><a href="javascript:loadPage('#da-content-wrap','<?php echo site_url("option/work_shift") ?>')">Work Shift</a></li>  <?php } ?>
+            </ul>
+        </li>
         <?php } ?>
 
     </ul>

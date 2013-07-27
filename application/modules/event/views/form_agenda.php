@@ -43,24 +43,77 @@
             </div>
 
             <div class="da-form-row">
-                <label>Agenda Mulai</label>
+                <label>Tanggal Mulai</label>
                 <div class="da-form-item">
                     <input value="<?php
                            if (isset($agenda_start_date_indo))
                                echo $agenda_start_date_indo;
-                        ?>" type="text" name="box_agenda_start_date_indo" id="box_agenda_start_date_indo" data-bvalidator=""  size="40">
+                        ?>" type="text" name="box_agenda_start_date" id="box_agenda_start_date" data-bvalidator="required"  size="40">
                 </div>
             </div>
 
             <div class="da-form-row">
-                <label>Agenda Berakhir</label>
+                <label>Tanggal Berakhir</label>
                 <div class="da-form-item">
                     <input value="<?php
                            if (isset($agenda_end_date_indo))
                                echo $agenda_end_date_indo;
-                        ?>" type="text" name="box_agenda_end_date_indo" id="box_agenda_end_date_indo" data-bvalidator="" size="40">
+                        ?>" type="text" name="box_agenda_end_date" id="box_agenda_end_date" data-bvalidator="" size="40">
                 </div>
             </div>
+
+            <div class="da-form-row">
+                <label>Ulangi ?? Kali</label>
+                <div class="da-form-item">
+                  <?php $checked="checked=checked"; if (!isset($agenda_repeat_int)) $checked='' ?>
+                  <input type="checkbox" id="box_is_repeat_n" <?php echo $checked; ?> onchange="">
+                </div>
+            </div>
+
+            <div class="da-form-row">
+                <label>Diulangi berapa kali</label>
+                <div class="da-form-item">
+                    <input value="<?php
+                    if (isset($agenda_repeat_int))
+                     echo $agenda_repeat_int;
+                 ?>" type="text" name="box_agenda_repeat_int" id="box_agenda_repeat_int" data-bvalidator="" size="40">
+             </div>
+         </div>
+
+         <div class="da-form-row">
+            <label>Ulangi Berdasarkan Waktu</label>
+            <div class="da-form-item">
+              <?php $checked="checked=checked"; if (!isset($agenda_repeat_int)) $checked='' ?>
+              <input type="checkbox" id="box_is_repeat_t" <?php echo $checked; ?> onchange="">
+          </div>
+      </div>      
+
+    <div class="da-form-row">
+        <label>Diulangi Selamanya ?</label>
+        <div class="da-form-item">
+          <?php $checked="checked=checked"; if (!isset($agenda_repeat_occurence))  $checked=''; if(isset($agenda_repeat_occurence)&&$agenda_repeat_occurence!='selamanya') $checked='' ?>
+          <input type="checkbox" id="box_is_forever" <?php echo $checked; ?> onchange="">
+      </div>
+  </div>
+
+          <div class="da-form-row">
+            <label>Diulangi tiap</label>
+            <div class="da-form-item">
+              <select data-bvalidator="required,cekcombo"  id="box_agenda_repeat" name="box_agenda_repeat">
+                <?php
+                $data = $this->data_master->event_repeat();
+                foreach ($data as $key => $value) {
+                    $selected = "";
+                    if (isset($sys_user_type)) {
+                        if ($value == $sys_user_type)
+                            $selected = "selected";
+                    }
+                    echo "<option value='$key' $selected>$value</option>";
+                }
+                ?>
+            </select>
+        </div>
+        </div>   
 
             <div class="da-form-row">
                 <label>Biaya Agenda</label>
@@ -81,6 +134,77 @@
     </form>
     <script type="text/javascript" >
         
+    function disable_forever()
+    {
+        var is_checked = $('#box_is_forever').attr('checked')?true:false;
+
+        if(is_checked)
+        {
+            $("#box_agenda_end_date").attr("disabled","disabled");
+        }
+        else
+        {
+            $("#box_agenda_end_date").removeAttr("disabled");
+
+        }            
+    }
+
+    function disable_repeat_t()
+    {
+        var is_checked = $('#box_is_repeat_t').attr('checked')?true:false;
+        var is_checked2 = $('#box_is_repeat_n').attr('checked')?true:false;
+
+        if(is_checked)
+        {
+            $("#box_agenda_repeat").attr("disabled","disabled");
+        }
+        else
+        {
+            $("#box_agenda_repeat").removeAttr("disabled");
+
+        }
+
+        if(is_checked2)
+        {
+            $("#box_is_repeat_n").attr("checked","checked");
+        }
+        else
+        {
+            $("#box_is_repeat_n").removeAttr("checked");
+
+        }        
+        disable_repeat_n();
+    }
+
+    function disable_repeat_n()
+    {
+        var is_checked = $('#box_is_repeat_n').attr('checked')?true:false;
+        var is_checked2 = $('#box_is_repeat_t').attr('checked')?true:false;
+
+        if(is_checked)
+        {
+            $("#box_agenda_repeat_int").attr("disabled","disabled");
+            $("#box_agenda_repeat").attr("disabled","disabled");
+
+        }
+        else
+        {
+            $("#box_agenda_repeat_int").removeAttr("disabled");
+            $("#box_agenda_repeat").removeAttr("disabled");
+        }
+
+        if(is_checked2)
+        {
+            $("#box_is_repeat_t").attr("checked","checked");
+        }
+        else
+        {
+            $("#box_is_repeat_t").removeAttr("checked");
+
+        }        
+        disable_repeat_t();
+    }
+
         $(window).resize(function() {
             $('#form_agendacontrol').dialog("option", "position", ['center', 'center']);
         });
@@ -95,6 +219,11 @@
                 title: '<?php echo $title; ?>',
                 resizable: false,
                 width: 'auto',
+                open: function(event, ui){
+                        disable_forover();
+                        disable_repeat_t();
+                        disable_repeat_n();
+                },
                 modal: true
             });
             
